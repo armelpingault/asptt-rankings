@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch('/api/fetchRankings');
+        const response = await fetch('/asptt-rankings/api/fetchRankings');
         const data: RankingsResponse[] = await response.json();
         setRankings(data);
       } catch (error) {
