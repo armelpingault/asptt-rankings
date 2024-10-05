@@ -9,9 +9,10 @@ import { NextResponse } from 'next/server';
 // const chromium = require("@sparticuz/chromium-min");
 // const puppeteer = require("puppeteer-core");
 
-const chrome = require('@sparticuz/chromium');
+// const chrome = require('@sparticuz/chromium');
 const puppeteer = require('puppeteer-core');
-const production = process.env.NODE_ENV === 'production';
+// const production = process.env.NODE_ENV === 'production';
+const chromium = require("@sparticuz/chromium");
 
 
 
@@ -59,20 +60,26 @@ export async function GET() {
   //   headless: chromium.headless,
   // });
 
-  const browser = await puppeteer.launch(
-    production ? {
-        args: chrome.args,
-        defaultViewport: chrome.defaultViewport,
-        executablePath: await chrome.executablePath(),
-        headless: 'new',
-        ignoreHTTPSErrors: true
-    } : {
-        headless: 'new',
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-    }
-);
+//   const browser = await puppeteer.launch(
+//     production ? {
+//         args: chrome.args,
+//         defaultViewport: chrome.defaultViewport,
+//         executablePath: await chrome.executablePath(),
+//         headless: 'new',
+//         ignoreHTTPSErrors: true
+//     } : {
+//         headless: 'new',
+//         executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+//     }
+// );
 
 
+const browser = await puppeteer.launch({
+  args: chromium.args,
+  defaultViewport: chromium.defaultViewport,
+  executablePath: await chromium.executablePath(),
+  headless: chromium.headless,
+});
 
   // const puppeteer = await import("puppeteer-core");
   // browser = await puppeteer.launch({
