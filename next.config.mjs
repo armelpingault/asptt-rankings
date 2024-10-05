@@ -2,7 +2,10 @@
 const nextConfig = {
   basePath: '/asptt-rankings',
   distDir: 'docs',
-  output: 'export'
+  images: {
+    unoptimized: true,
+  },
+  output: 'export',
 };
 
 export default nextConfig;
