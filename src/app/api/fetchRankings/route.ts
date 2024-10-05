@@ -1,51 +1,120 @@
 import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer'; // Use Puppeteer which includes Chrome
 
-async function fetchRankings(url: string) {
-  const browser = await puppeteer.launch({
-    headless: true, // Ensure it's running headless
-  });
+// import { Browser as CoreBrowser } from "puppeteer-core";
+// import {Browser} from "puppeteer";
+// import chromium from "@sparticuz/chromium-min";
+// import puppeteer from "puppeteer-core";
+// const puppeteer = require("puppeteer-core");
+// const chromium = require("@sparticuz/chromium-min");
+// const puppeteer = require("puppeteer-core");
 
-  const page = await browser.newPage();
-  await page.goto(url, { waitUntil: 'networkidle2' });
+// const chrome = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
+// const production = process.env.NODE_ENV === 'production';
+const chromium = require("@sparticuz/chromium");
 
-  const title = await page.$eval('h1', (element) => element.innerText.trim());
 
-  const rankings = await page.evaluate(() => {
-    const rows = Array.from(document.querySelectorAll('table tbody tr'));
-    return rows.map(row => {
-      const cells = row.querySelectorAll('td');
-      return {
-        position: cells[0]?.innerText.trim(),
-        team: cells[1]?.innerText.trim(),
-        points: cells[2]?.innerText.trim(),
-        matchesPlayed: cells[3]?.innerText.trim(),
-        wins: cells[4]?.innerText.trim(),
-        draws: cells[5]?.innerText.trim(),
-        losses: cells[6]?.innerText.trim(),
-        goalsFor: cells[7]?.innerText.trim(),
-        goalsAgainst: cells[8]?.innerText.trim(),
-        goalDifference: cells[9]?.innerText.trim(),
-      };
-    });
-  });
 
-  await browser.close();
-  return { title, rankings };
-}
+// 本地 Chrome 执行包路径
+// const localExecutablePath =
+//   process.platform === "win32"
+//     ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+//     : process.platform === "linux"
+//     ? "/usr/bin/google-chrome"
+//     : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
-  export async function GET() {
-    const urls = [
-      'https://normandie.fff.fr/competitions?tab=ranking&id=420957&phase=1&poule=2&type=ch',
-      'https://foot14.fff.fr/competitions?tab=ranking&id=426991&phase=1&poule=3&type=ch'
-    ];
-    
-    try {
-      const rankings = await Promise.all(urls.map(fetchRankings));
-      return NextResponse.json(rankings);
-    } catch (err) {
-      console.error('Failed to fetch rankings:', err); // Log the error
-      return NextResponse.json({ error: 'Failed to fetch rankings' }, { status: 500 });
-    }
+// 远程执行包
+// const remoteExecutablePath =
+//   "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
+
+// 运行环境
+// const isDev = process.env.NODE_ENV === "development";
+
+export async function GET() {
+  const urls = [
+    'https://normandie.fff.fr/competitions?tab=ranking&id=420957&phase=1&poule=2&type=ch',
+    'https://foot14.fff.fr/competitions?tab=ranking&id=426991&phase=1&poule=3&type=ch'
+  ];
+
+  // const browser = await puppeteer.launch({ headless: true }); // Use Puppeteer which includes Chrome
+
+  // let browser: Browser | CoreBrowser;
+
+  // const browser = await puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath: await chromium.executablePath(
+  //     "https://www.example.com/chromiumPack.tar"
+  //   ),
+  //   headless: chromium.headless,
+  // });
+  // let browser = null;
+
+  // browser = await puppeteer.launch({
+  //   args: isDev ? [] : chromium.args,
+  //   defaultViewport: { width: 1920, height: 1080 },
+  //   executablePath: isDev
+  //     ? localExecutablePath
+  //     : await chromium.executablePath(remoteExecutablePath),
+  //   headless: chromium.headless,
+  // });
+
+//   const browser = await puppeteer.launch(
+//     production ? {
+//         args: chrome.args,
+//         defaultViewport: chrome.defaultViewport,
+//         executablePath: await chrome.executablePath(),
+//         headless: 'new',
+//         ignoreHTTPSErrors: true
+//     } : {
+//         headless: 'new',
+//         executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+//     }
+// );
+
+
+const browser = await puppeteer.launch({
+  args: chromium.args,
+  defaultViewport: chromium.defaultViewport,
+  executablePath: await chromium.executablePath(),
+  headless: chromium.headless,
+});
+
+  // const puppeteer = await import("puppeteer-core");
+  // browser = await puppeteer.launch({
+  //     args: chromium.args,
+  //     defaultViewport: chromium.defaultViewport,
+  //     executablePath: await chromium.executablePath(),
+  //     headless: chromium.headless,
+  // });
+
+
+  try {
+    const rankings = await Promise.all(urls.map(async (url) => {
+      const page = await browser.newPage();
+      await page.goto(url, { waitUntil: 'networkidle2' });
+
+      // Get the title
+      const title = await page.evaluate(() => document.querySelector('h1')?.innerText || '');
+
+      // Get rankings table
+      const tableData = await page.evaluate(() => {
+        const rows = Array.from(document.querySelectorAll('table tbody tr'));
+        return rows.map(row => {
+          const columns = Array.from(row.querySelectorAll('td'));
+          return columns.map(col => col.innerText);
+        });
+      });
+
+      return { title, rankings: tableData };
+    }));
+
+    return NextResponse.json(rankings);
+  } catch (error) {
+    console.error('Failed to fetch rankings:', error);
+    return NextResponse.json({ error: 'Failed to fetch rankings' });
+  } finally {
+    await browser.close();
   }
-  
+}
