@@ -33,7 +33,7 @@ export default function Home() {
         console.error('Error fetching rankings:', error);
       }
     };
-    
+
     fetchRankings();
   }, []);
 
@@ -71,8 +71,8 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {rankingGroup.rankings.map((ranking, index) => (
-                    <tr 
-                      key={index} 
+                    <tr
+                      key={index}
                       className={`border-t ${/^AS PTT CAEN/i.test(ranking.team) ? 'bg-yellow-200 font-bold' : 'bg-white'} hover:bg-gray-100 transition-colors duration-200`}
                     >
                       <td className="p-4">{ranking.position}</td>
