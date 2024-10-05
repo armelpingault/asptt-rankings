@@ -2,22 +2,22 @@
 import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
-// interface Ranking {
-//   position: string;
-//   team: string;
-//   points: string;
-//   matchesPlayed: string;
-//   wins: string;
-//   draws: string;
-//   losses: string;
-//   goalsFor: string;
-//   goalsAgainst: string;
-//   goalDifference: string;
-// }
+interface Ranking {
+  position: string;
+  team: string;
+  points: string;
+  matchesPlayed: string;
+  wins: string;
+  draws: string;
+  losses: string;
+  goalsFor: string;
+  goalsAgainst: string;
+  goalDifference: string;
+}
 
 interface RankingsResponse {
   title: string;
-  rankings: any; // Ranking[];
+  rankings: Ranking[];
 }
 
 export default function Home() {
@@ -70,21 +70,21 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rankingGroup.rankings.map((ranking: any, index: number) => (
+                  {rankingGroup.rankings.map((ranking, index) => (
                     <tr
                       key={index}
-                      className={`border-t ${/^AS PTT CAEN/i.test(ranking[1]) ? 'bg-yellow-200 font-bold' : 'bg-white'} hover:bg-gray-100 transition-colors duration-200`}
+                      className={`border-t ${/^AS PTT CAEN/i.test(ranking.team) ? 'bg-yellow-200 font-bold' : 'bg-white'} hover:bg-gray-100 transition-colors duration-200`}
                     >
-                      <td className="p-4">{ranking[0]}</td>
-                      <td className="p-4">{ranking[1]}</td>
-                      <td className="p-4">{ranking[2]}</td>
-                      <td className="p-4">{ranking[3]}</td>
-                      <td className="p-4">{ranking[4]}</td>
-                      <td className="p-4">{ranking[5]}</td>
-                      <td className="p-4">{ranking[6]}</td>
-                      <td className="p-4">{ranking[7]}</td>
-                      <td className="p-4">{ranking[8]}</td>
-                      <td className="p-4">{ranking[9]}</td>
+                      <td className="p-4">{ranking.position}</td>
+                      <td className="p-4">{ranking.team}</td>
+                      <td className="p-4">{ranking.points}</td>
+                      <td className="p-4">{ranking.matchesPlayed}</td>
+                      <td className="p-4">{ranking.wins}</td>
+                      <td className="p-4">{ranking.draws}</td>
+                      <td className="p-4">{ranking.losses}</td>
+                      <td className="p-4">{ranking.goalsFor}</td>
+                      <td className="p-4">{ranking.goalsAgainst}</td>
+                      <td className="p-4">{ranking.goalDifference}</td>
                     </tr>
                   ))}
                 </tbody>
