@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 // import { Browser as CoreBrowser } from "puppeteer-core";
 // import {Browser} from "puppeteer";
-import chromium from "@sparticuz/chromium-min";
+// import chromium from "@sparticuz/chromium-min";
 // import puppeteer from "puppeteer-core";
 // const puppeteer = require("puppeteer-core");
 // const chromium = require("@sparticuz/chromium-min");
