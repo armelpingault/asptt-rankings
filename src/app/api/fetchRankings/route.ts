@@ -5,25 +5,30 @@ import { NextResponse } from 'next/server';
 // import {Browser} from "puppeteer";
 import chromium from "@sparticuz/chromium-min";
 // import puppeteer from "puppeteer-core";
-const puppeteer = require("puppeteer-core");
+// const puppeteer = require("puppeteer-core");
 // const chromium = require("@sparticuz/chromium-min");
 // const puppeteer = require("puppeteer-core");
 
+const chrome = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
+const production = process.env.NODE_ENV === 'production';
+
+
 
 // 本地 Chrome 执行包路径
-const localExecutablePath =
-  process.platform === "win32"
-    ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-    : process.platform === "linux"
-    ? "/usr/bin/google-chrome"
-    : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+// const localExecutablePath =
+//   process.platform === "win32"
+//     ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+//     : process.platform === "linux"
+//     ? "/usr/bin/google-chrome"
+//     : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 // 远程执行包
-const remoteExecutablePath =
-  "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
+// const remoteExecutablePath =
+//   "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
 
 // 运行环境
-const isDev = process.env.NODE_ENV === "development";
+// const isDev = process.env.NODE_ENV === "development";
 
 export async function GET() {
   const urls = [
@@ -43,16 +48,30 @@ export async function GET() {
   //   ),
   //   headless: chromium.headless,
   // });
-  let browser = null;
+  // let browser = null;
 
-  browser = await puppeteer.launch({
-    args: isDev ? [] : chromium.args,
-    defaultViewport: { width: 1920, height: 1080 },
-    executablePath: isDev
-      ? localExecutablePath
-      : await chromium.executablePath(remoteExecutablePath),
-    headless: chromium.headless,
-  });
+  // browser = await puppeteer.launch({
+  //   args: isDev ? [] : chromium.args,
+  //   defaultViewport: { width: 1920, height: 1080 },
+  //   executablePath: isDev
+  //     ? localExecutablePath
+  //     : await chromium.executablePath(remoteExecutablePath),
+  //   headless: chromium.headless,
+  // });
+
+  const browser = await puppeteer.launch(
+    production ? {
+        args: chrome.args,
+        defaultViewport: chrome.defaultViewport,
+        executablePath: await chrome.executablePath(),
+        headless: 'new',
+        ignoreHTTPSErrors: true
+    } : {
+        headless: 'new',
+        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    }
+);
+
 
 
   // const puppeteer = await import("puppeteer-core");
