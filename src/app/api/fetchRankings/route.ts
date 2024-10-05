@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 // import puppeteer from 'puppeteer'; // Use Puppeteer which includes Chrome
 
-import { Browser as CoreBrowser } from "puppeteer-core";
-import {Browser} from "puppeteer";
-// import chromium from "@sparticuz/chromium-min";
-// const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium-min");
+// import { Browser as CoreBrowser } from "puppeteer-core";
+// import {Browser} from "puppeteer";
+import chromium from "@sparticuz/chromium-min";
+// import puppeteer from "puppeteer-core";
 const puppeteer = require("puppeteer-core");
+// const chromium = require("@sparticuz/chromium-min");
+// const puppeteer = require("puppeteer-core");
 
 
 // 本地 Chrome 执行包路径
@@ -23,6 +24,7 @@ const remoteExecutablePath =
 
 // 运行环境
 const isDev = process.env.NODE_ENV === "development";
+
 export async function GET() {
   const urls = [
     'https://normandie.fff.fr/competitions?tab=ranking&id=420957&phase=1&poule=2&type=ch',
