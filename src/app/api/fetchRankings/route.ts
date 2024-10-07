@@ -3,11 +3,11 @@
 import { NextResponse } from 'next/server';
 // import puppeteer from 'puppeteer';
 
-// const puppeteer = require("puppeteer");
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer");
+// const puppeteer = require("puppeteer-core");
 
 // const chromium = require("@sparticuz/chromium");
-const chromium = require("@sparticuz/chromium-min");
+// const chromium = require("@sparticuz/chromium-min");
 
 async function fetchRankings(url: string) {
   // const browser = await puppeteer.launch({
@@ -15,14 +15,16 @@ async function fetchRankings(url: string) {
   // });
 
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(
-      // "https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar"
-      "https://chromium.armelpingault.com/chromium-v129.0.0-pack.tar"
-    ),
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
+    // args: chromium.args,
+    // defaultViewport: chromium.defaultViewport,
+    // executablePath: await chromium.executablePath(
+    //   // "https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar"
+    //   // "https://chromium.armelpingault.com/chromium-v129.0.0-pack.tar"
+    // ),
+    // headless: chromium.headless,
+    // ignoreHTTPSErrors: true,
+    headless: true, // Ensure it's running headless
+
   });
 
 
