@@ -1,13 +1,29 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { NextResponse } from 'next/server';
 // import puppeteer from 'puppeteer';
 
-const puppeteer = require("puppeteer");
+// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+
 // const chromium = require("@sparticuz/chromium");
+const chromium = require("@sparticuz/chromium-min");
 
 async function fetchRankings(url: string) {
+  // const browser = await puppeteer.launch({
+  //   headless: true, // Ensure it's running headless
+  // });
+
   const browser = await puppeteer.launch({
-    headless: true, // Ensure it's running headless
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      "https://github.com/Sparticuz/chromium/releases/download/v119.0.0/chromium-v119.0.0-pack.tar"
+    ),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
   });
+
 
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'networkidle2' });
