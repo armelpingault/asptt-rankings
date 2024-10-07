@@ -19,7 +19,7 @@ async function fetchRankings(url: string) {
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(
       // "https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar"
-      "https://chromium.armelpingault.com/chromium-v119.0.0-pack.tar"
+      "https://chromium.armelpingault.com/chromium-v129.0.0-pack.tar"
     ),
     headless: chromium.headless,
     ignoreHTTPSErrors: true,
