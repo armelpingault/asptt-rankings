@@ -6,8 +6,10 @@ import { NextResponse } from 'next/server';
 const puppeteer = require("puppeteer");
 // const puppeteer = require("puppeteer-core");
 
-// const chromium = require("@sparticuz/chromium");
+const chromium = require("@sparticuz/chromium");
 // const chromium = require("@sparticuz/chromium-min");
+
+chromium.setHeadlessMode = true;
 
 async function fetchRankings(url: string) {
   // const browser = await puppeteer.launch({
@@ -16,14 +18,14 @@ async function fetchRankings(url: string) {
 
   const browser = await puppeteer.launch({
     // args: chromium.args,
-    // defaultViewport: chromium.defaultViewport,
-    // executablePath: await chromium.executablePath(
-    //   // "https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar"
-    //   // "https://chromium.armelpingault.com/chromium-v129.0.0-pack.tar"
-    // ),
-    // headless: chromium.headless,
-    // ignoreHTTPSErrors: true,
-    headless: true, // Ensure it's running headless
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      // "https://github.com/Sparticuz/chromium/releases/download/v129.0.0/chromium-v129.0.0-pack.tar"
+      // "https://chromium.armelpingault.com/chromium-v129.0.0-pack.tar"
+    ),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+    // headless: true, // Ensure it's running headless
 
   });
 
