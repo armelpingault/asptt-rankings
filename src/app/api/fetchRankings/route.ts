@@ -3,8 +3,8 @@
 import { NextResponse } from 'next/server';
 // import puppeteer from 'puppeteer';
 
-const puppeteer = require("puppeteer");
-// const puppeteer = require("puppeteer-core");
+// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 
 const chromium = require("@sparticuz/chromium");
 // const chromium = require("@sparticuz/chromium-min");
