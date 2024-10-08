@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 import Slider from 'react-slick';
 
 interface Ranking {
@@ -21,7 +22,7 @@ interface RankingsResponse {
 }
 
 export default function Home() {
-  const [rankings, setRankings] = useState<RankingsResponse[] | null>(null);
+  const [rankings] = useState<RankingsResponse[] | null>(null);
 
   // useEffect(() => {
   //   const fetchRankings = async () => {
