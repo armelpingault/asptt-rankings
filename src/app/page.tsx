@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 import Slider from 'react-slick';
 
 interface Ranking {
@@ -21,21 +22,21 @@ interface RankingsResponse {
 }
 
 export default function Home() {
-  const [rankings, setRankings] = useState<RankingsResponse[] | null>(null);
+  const [rankings] = useState<RankingsResponse[] | null>(null);
 
-  useEffect(() => {
-    const fetchRankings = async () => {
-      try {
-        const response = await fetch('/asptt-rankings/api/fetchRankings');
-        const data: RankingsResponse[] = await response.json();
-        setRankings(data);
-      } catch (error) {
-        console.error('Error fetching rankings:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchRankings = async () => {
+  //     try {
+  //       const response = await fetch('/api/fetchRankings');
+  //       const data: RankingsResponse[] = await response.json();
+  //       setRankings(data);
+  //     } catch (error) {
+  //       console.error('Error fetching rankings:', error);
+  //     }
+  //   };
 
-    fetchRankings();
-  }, []);
+  //   fetchRankings();
+  // }, []);
 
   const settings = {
     dots: true,
