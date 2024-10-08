@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { NextResponse } from 'next/server';
-// import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 
 // const puppeteer = require("puppeteer");
 // const puppeteer = require("puppeteer-core");
@@ -15,44 +15,44 @@ import { NextResponse } from 'next/server';
 // chromium.setHeadlessMode = true;
 
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
-const CHROMIUM_PATH =
-  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+// const CHROMIUM_PATH =
+//   "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
 
-  async function getBrowser() {
-    if (process.env.VERCEL_ENV === "production") {
-      const chromium = await import("@sparticuz/chromium-min").then(
-        (mod) => mod.default
-      );
+//   async function getBrowser() {
+//     if (process.env.VERCEL_ENV === "production") {
+//       const chromium = await import("@sparticuz/chromium-min").then(
+//         (mod) => mod.default
+//       );
   
-      const puppeteerCore = await import("puppeteer-core").then(
-        (mod) => mod.default
-      );
+//       const puppeteerCore = await import("puppeteer-core").then(
+//         (mod) => mod.default
+//       );
   
-      const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+//       const executablePath = await chromium.executablePath(CHROMIUM_PATH);
   
-      const browser = await puppeteerCore.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath,
-        headless: chromium.headless,
-      });
-      return browser;
-    } else {
-      const puppeteer = await import("puppeteer").then((mod) => mod.default);
+//       const browser = await puppeteerCore.launch({
+//         args: chromium.args,
+//         defaultViewport: chromium.defaultViewport,
+//         executablePath,
+//         headless: chromium.headless,
+//       });
+//       return browser;
+//     } else {
+//       const puppeteer = await import("puppeteer").then((mod) => mod.default);
   
-      const browser = await puppeteer.launch();
-      return browser;
-    }
-  }
+//       const browser = await puppeteer.launch();
+//       return browser;
+//     }
+//   }
 
   
 
 async function fetchRankings(url: string) {
-  // const browser = await puppeteer.launch({
-  //   headless: true, // Ensure it's running headless
-  // });
+  const browser = await puppeteer.launch({
+    headless: true, // Ensure it's running headless
+  });
 
   // const browser = await puppeteer.launch({
   //   // args: chromium.args,
@@ -67,7 +67,7 @@ async function fetchRankings(url: string) {
 
   // });
 
-  const browser = await getBrowser();
+  // const browser = await getBrowser();
 
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'networkidle2' });
@@ -100,7 +100,7 @@ async function fetchRankings(url: string) {
 export async function GET() {
   const urls = [
     'https://normandie.fff.fr/competitions?tab=ranking&id=420957&phase=1&poule=2&type=ch',
-    // 'https://foot14.fff.fr/competitions?tab=ranking&id=426991&phase=1&poule=3&type=ch'
+    'https://foot14.fff.fr/competitions?tab=ranking&id=426991&phase=1&poule=3&type=ch'
   ];
 
   try {
